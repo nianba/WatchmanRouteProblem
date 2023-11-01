@@ -1,2 +1,2 @@
 /test/
-**/pycache/
+**/__pycache__/

@@ -8,8 +8,7 @@ import time
 import logging
 import math
 logging.basicConfig(level=logging.INFO)
-# @func_set_timeout(30)
-# @profile
+
 def WatchmanRouteProblemSolver(polygon,coverage,d,iteration = 32):
     d = d/2
     convexSet = []

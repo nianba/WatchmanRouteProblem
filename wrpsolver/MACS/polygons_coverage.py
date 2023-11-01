@@ -125,18 +125,6 @@ def MaximallyCoveringConvexSubset(args):  # MCCS
         kernelPolygon, shapely.Point(watcher)))  # 列表排序
     polygon = visiblePolygon
     numOfReflexPoints = len(reflexPointList)
-    ###
-    # image = np.zeros((1000, 1000, 3), dtype=np.uint8)
-    # DrawPolygon( list(initialPolygon.exterior.coords), (255, 255, 255), image, zoomRate=10)
-    # DrawPolygon( list(visiblePolygon.exterior.coords), (0, 255, 255), image, zoomRate=10)
-    # DrawPolygon( list(kernelPolygon.exterior.coords), (0, 0, 255), image, zoomRate=10)
-    # DrawPoints(image, watcher.x, watcher.y,zoomRate=(10))
-    # for p in reflexPointList:
-    #     DrawPoints(image, p[0], p[1],size= 3,zoomRate=(10))
-    # cv2.imwrite('test.png',image)
-    # exit()
-
-    ###
 
     for i in range(numOfReflexPoints):
 
