@@ -1,7 +1,5 @@
 import cv2
 import numpy as np
-import shapely
-from ..Global import *
 def DrawPolygon( points, color, image, zoomRate = 1):
 
     points = np.array(points)
@@ -37,11 +35,6 @@ def DrawGridNum(image, x, y, num,zoomRate = 1):
                 1, (0, 0, 0), 1)
 def DrawLine(image, pt1, pt2,color = (0, 25, 255),zoomRate = 1):
 
-
-    # x1 = int(pt1[0])
-    # y1 = int(pt1[1])
-    # x2 = int(pt2[0])
-    # y2 = int(pt2[1])
     x1 = np.round(pt1[0] * zoomRate).astype(np.int32)
     y1 = np.round(pt1[1] * zoomRate).astype(np.int32)
     x2 = np.round(pt2[0] * zoomRate).astype(np.int32)
@@ -53,29 +46,3 @@ def DrawPath(image, path):
     while i < len(path)-1:
         DrawLine(image, path[i], path[i+1])
         i += 1
-def DrawMultiline(image, multiLine,color = (0, 25, 255),zoomRate = 1):
-    
-    def drawSingleline(image,line,color = (0, 25, 255),zoomRate = 1):
-        pointList = list(line.coords)
-        length = len(pointList)
-        for i in range(length-1):
-            DrawLine(image,pointList[i],pointList[i+1],color,zoomRate=zoomRate)
-
-    if(type(multiLine) == shapely.Point):
-        return
-    elif(type(multiLine) == shapely.LineString):
-        drawSingleline(image,multiLine,color,zoomRate=zoomRate)
-    elif(type(multiLine) == shapely.Polygon):
-        DrawPolygon(list(multiLine.exterior.coords),color,image,zoomRate=zoomRate)
-    elif(type(multiLine) == shapely.MultiLineString):
-        for line in list(multiLine.geoms):
-            drawSingleline(image,line,color,zoomRate=zoomRate)
-    elif(type(multiLine) == shapely.GeometryCollection):
-        for geometry in multiLine.geoms:
-            DrawMultiline(image,geometry,color=color,zoomRate=zoomRate)
-    elif(type(multiLine) == shapely.MultiPolygon):
-        for geometry in multiLine.geoms:
-            DrawMultiline(image,geometry,color=color,zoomRate=zoomRate)
-    else:
-        print(type(multiLine))
-        print("unknown type")

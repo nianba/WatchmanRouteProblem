@@ -1,7 +1,6 @@
 import shapely
 import math
 from shapely.ops import split
-from ..Global import *
 
 def GetKernel(polygon, watcher):
 
@@ -36,10 +35,7 @@ def GetKernel(polygon, watcher):
 def GetRayLine(watcher, vertex):
     xGap = vertex[0] - watcher[0]
     yGap = vertex[1] - watcher[1]
-    rate = (pic_size/(math.hypot(xGap, yGap)))*100000
+    rate = (1/(math.hypot(xGap, yGap)))*1e10
     extendPoint1 = (watcher[0] + xGap*rate,watcher[1] + yGap*rate)
     extendPoint2 = (watcher[0] - xGap*rate,watcher[1] - yGap*rate)
     return shapely.LineString([extendPoint1, extendPoint2])
-
-
-# def 

@@ -3,7 +3,6 @@ import cv2
 import numpy as np
 from . import GTSP
 from . import MACS
-from .Test.draw_pictures import DrawPolygon,DrawMultiline
 import time
 import logging
 import math
@@ -40,10 +39,7 @@ def WatchmanRouteProblemSolver(polygon,coverage,d,iteration = 32):
     gtspCase = GTSP.postProcessing(sampleList)
     logging.debug(time.time() - time1)
     time1 = time.time()
-    order, length1, path = GTSP.GetTrace(gtspCase,gridMap)
-    order, length, path = GTSP.GetTraceTabu(gtspCase,gridMap)
-    order, length2, path = GTSP.GetTraceACO(gtspCase,gridMap)
-    print(length1,length,length2)
+    order, length, path = GTSP.GetTrace(gtspCase,gridMap)
     logging.debug(time.time() - time1)
     return convexSet,sampleList,order,length,path,isSuccess
     

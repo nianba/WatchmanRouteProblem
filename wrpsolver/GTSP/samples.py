@@ -66,12 +66,6 @@ def postProcessing(sampleList):
             n += 1
         if (len(classify) > 0):
             cityClass.append(classify)
-    # for i in range(len(cityPos)):
-    #     x = cityPos[i][0]
-    #     y = cityPos[i][1]
-    #     x = np.round(x).astype(np.int32)
-    #     y = np.round(y).astype(np.int32)
-    #     cityPos[i] = (x,y)
     return ((cityPos, cityGoods, cityClass))
 
 

@@ -1,11 +1,10 @@
 import shapely
 import operator
 import math
-from ..Global import *
 def GetRayLine(watcher, vertex):
     xGap = vertex[0] - watcher[0]
     yGap = vertex[1] - watcher[1]
-    rate =  (pic_size/(math.hypot(xGap, yGap)))*100000
+    rate =  (1/(math.hypot(xGap, yGap)))*1e10
     extendPoint1 = (watcher[0] + xGap*rate,watcher[1] + yGap*rate)
     extendPoint2 = (watcher[0] - xGap*rate,watcher[1] - yGap*rate)
     return shapely.LineString([extendPoint1, extendPoint2])
@@ -29,8 +28,6 @@ def GetIntersectPointList(intersection):
             if (type(geometry) == shapely.Point):
                 pointList.append(geometry)
             elif (type(geometry) == shapely.LineString):
-                # pointList = pointList+list(geometry.boundary.geoms)
-                # pointList.append()
                 pass
             else:
                 print("Unknown geometry type !")

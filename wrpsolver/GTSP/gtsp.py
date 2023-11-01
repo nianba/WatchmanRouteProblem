@@ -3,34 +3,6 @@ import random
 import logging
 from multiprocessing import Pool,Manager
 from .astar.a_star import findPath
-from .mtsp.tabu_mtsp import TabuMtsp
-from .mtsp.aco_mtsp import ACOMtsp
-
-class TabuMtspAstar(TabuMtsp):
-    def __init__(self, cities:list[tuple], typeList:list[int], iters = 1000, 
-                 tabuLimit = 10, maxCandidateNum = None, choice = 0.8,
-                 grid = None):
-        super().__init__(cities,typeList,iters,max(typeList),maxCandidateNum,choice)
-        self.path = None
-        self.grid = grid
-
-    def GetDistanceMartix(self):
-        path, distance = RecordDistance(self.cities, self.grid, self.cityNum)
-        self.path = path
-        return distance
-class ACOMtspAstar(ACOMtsp):
-    def __init__(self, cities:list[tuple], typeList:list[int], iters = 100, 
-                 antsNum = 40, alpha = 1, beta = 2, rho = 0.8,
-                 grid = None):
-        super().__init__(cities, typeList, iters, antsNum, alpha, beta, rho)
-        self.path = None
-        self.grid = grid
-
-    def GetDistanceMartix(self):
-        path, distance = RecordDistance(self.cities, self.grid, self.cityNum)
-        self.path = path
-        return distance
-
 
 def ColisionFreeDistance(args):#多线程求无碰撞距离
     i = args[0]
@@ -55,7 +27,7 @@ def RecordDistance(city_position, grid, num):
         for j in range(i):
             tempPaths[i].append(0)
             tempDistances[i].append(0)
-    pool = Pool(12)
+    pool = Pool(8)
 
     pool.map(ColisionFreeDistance,iterable = [(i,city_position,tempPaths[i],tempDistances[i],grid) for i in range(num)])
     pool.close()
@@ -76,29 +48,6 @@ def cal_cost(distance, solution, goods_num):
     for j in range(goods_num-1):
         cost += distance[solution[j]][solution[j+1]]
     return cost
-
-def GetTraceTabu(tspCase, grid):
-    cityPosList, goodsTypes, _ = tspCase
-    mtspSolver = TabuMtspAstar(cityPosList,goodsTypes,grid = grid)
-    bestSolution, bestValue, _ = mtspSolver.findPath()
-    solutionID = [ city.id  for city in bestSolution]
-
-    solution = [city.pos for city in bestSolution]
-    path = [mtspSolver.path[solutionID[i]][solutionID[i+1]]
-            for i in range(len(solution)-1)]
-    return solution, bestValue, path
-
-def GetTraceACO(tspCase, grid):
-    cityPosList, goodsTypes, _ = tspCase
-    mtspSolver = ACOMtspAstar(cityPosList,goodsTypes,grid = grid)
-    bestSolution, bestValue, _ = mtspSolver.findPath()
-    solutionID = [ city.id  for city in bestSolution]
-
-    solution = [city.pos for city in bestSolution]
-    path = [mtspSolver.path[solutionID[i]][solutionID[i+1]]
-            for i in range(len(solution)-1)]
-    return solution, bestValue, path
-
 
 def GetTrace(tspCase, grid):
     ##### 参数及相关数据初始化 #####

@@ -8,7 +8,6 @@ from multiprocessing import Pool
 
 from .compute_kernel import GetKernel
 from .compute_visibility import GetVisibilityPolygon
-from ..Global import *
 from ..Test.draw_pictures import *
 def SelectMaxPolygon(polygons):
     MaxPolygon = None
@@ -61,10 +60,7 @@ def GetKernelPolygon(visiblePolygon):
 def GetRayLine(watcher, vertex):
     xGap = vertex[0] - watcher[0]
     yGap = vertex[1] - watcher[1]
-    rate = (pic_size/(math.hypot(xGap, yGap)))*100000
-    if (rate < 100):
-        # print(rate,xGap,yGap,vertex)
-        pass
+    rate = (1/(math.hypot(xGap, yGap)))*1e10
     extendPoint1 = (watcher[0] + xGap*rate,watcher[1] + yGap*rate)
     extendPoint2 = (watcher[0] - xGap*rate,watcher[1] - yGap*rate)
     return shapely.LineString([extendPoint1, extendPoint2])
@@ -165,7 +161,7 @@ def MaximallyCoveringConvexSubset(args):  # MCCS
 def PolygonCover(polygon, d, coverage, iterations=32):
     polygonCoverList = []
     unCoverPolygon = shapely.Polygon(polygon)
-    pool = Pool(32)
+    pool = Pool(8)
     while ((unCoverPolygon.area / polygon.area) > (1-coverage)):
 
         point = SelectPointFromPolygon(unCoverPolygon)

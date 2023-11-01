@@ -4,18 +4,23 @@ import cv2
 import shapely
 import math
 import os
+import shutil
 from . import vis_maps
 from ..WRP_solver import WatchmanRouteProblemSolver
 from .draw_pictures import *
 
 def RunTest(seed = 1):
+    seed = seed
     iterationNum = 64
     d = 60
-    coverageRate = 0.98
+    coverageRate = 0.95
+    #创建测试结果保存目录
+    path = os.path.dirname(os.path.realpath(__file__))+'/../../test'
+    if os.path.exists(path):
+        shutil.rmtree(path)
+    os.makedirs(path,exist_ok=True)
 
     # 随机生成多边形
-    path = os.path.dirname(os.path.realpath(__file__))+'/../../test'
-    os.makedirs(path,exist_ok=True)
     pointList,_,_ = vis_maps.GetPolygon(seed)
     polygon = shapely.Polygon(pointList).simplify(0.05,True).buffer(-0.7,join_style=2)
     if(type(polygon) != shapely.Polygon):
